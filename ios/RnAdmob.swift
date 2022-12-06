@@ -5,9 +5,23 @@ class RnAdmob: NSObject {
   private var requestedInterstitialAd: GADInterstitialAd?
 
   @objc public func initialize(
+    _ maxAdContentRating: GADMaxAdContentRating,
+    _ tagForChildDirectedTreatment: Int,
+    _ tagForUnderAgeOfConsent: Int,
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: RCTPromiseRejectBlock
   ) {
+    GADMobileAds.sharedInstance().requestConfiguration.maxAdContentRating = maxAdContentRating
+
+    if tagForChildDirectedTreatment != -1 {
+      GADMobileAds.sharedInstance().requestConfiguration.tag(
+        forChildDirectedTreatment: tagForChildDirectedTreatment == 1)
+    }
+    if tagForUnderAgeOfConsent != -1 {
+      GADMobileAds.sharedInstance().requestConfiguration.tagForUnderAge(
+        ofConsent: tagForUnderAgeOfConsent == 1)
+    }
+
     GADMobileAds.sharedInstance().start(completionHandler: {
       GADInitializationStatus -> Void in
       resolve(true)

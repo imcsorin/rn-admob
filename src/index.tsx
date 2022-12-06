@@ -18,21 +18,59 @@ const RnAdmob = NativeModules.RnAdmob
       }
     );
 
-const useInitialize = (skip?: boolean): boolean => {
+export enum TagForChildDirectedTreatment {
+  false = 0,
+  true = 1,
+  unspecified = -1,
+}
+
+export enum TagForUnderAgeOfConsent {
+  false = 0,
+  true = 1,
+  unspecified = -1,
+}
+
+export enum MaxAdContentRating {
+  general = 'G',
+  mature = 'MA',
+  parentalGuidance = 'PG',
+  teen = 'T',
+  unspecified = '',
+}
+
+const useInitialize = ({
+  skip,
+  maxAdContentRating = MaxAdContentRating.unspecified,
+  tagForChildDirectedTreatment = TagForChildDirectedTreatment.unspecified,
+  tagForUnderAgeOfConsent = TagForUnderAgeOfConsent.unspecified,
+}: {
+  skip?: boolean;
+  maxAdContentRating?: MaxAdContentRating;
+  tagForChildDirectedTreatment?: TagForChildDirectedTreatment;
+  tagForUnderAgeOfConsent?: TagForUnderAgeOfConsent;
+}): boolean => {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
-  const f = async () => {
+  const f = React.useCallback(async () => {
     try {
-      const resp = await RnAdmob.initialize();
+      const resp = await RnAdmob.initialize(
+        maxAdContentRating,
+        tagForChildDirectedTreatment,
+        tagForUnderAgeOfConsent
+      );
       setIsInitialized(resp);
     } catch {
       setIsInitialized(false);
     }
-  };
+  }, [
+    maxAdContentRating,
+    tagForChildDirectedTreatment,
+    tagForUnderAgeOfConsent,
+  ]);
 
   React.useEffect(() => {
     !skip && f();
-  }, [skip]);
+  }, [skip, f]);
 
   return isInitialized;
 };

@@ -3,6 +3,9 @@
 @interface RCT_EXTERN_MODULE(RnAdmob, NSObject)
 
 RCT_EXTERN_METHOD(initialize
+                  :(NSString *) maxAdContentRating
+                  :(NSNumber *) tagForChildDirectedTreatment
+                  :(NSNumber *) tagForUnderAgeOfConsent
                   :(RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

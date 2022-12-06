@@ -50,7 +50,7 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void initialize(final Promise promise) {
+  public void initialize(String maxAdContentRating, int tagForChildDirectedTreatment, int tagForUnderAgeOfConsent, final Promise promise) {
     Context context = getReactApplicationContext();
     Activity activity = getCurrentActivity();
     if (activity == null || context == null) {
@@ -63,13 +63,19 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
       ApplicationInfo ai;
       ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
       adMobIdentifier = (Object) ai.metaData.get("com.google.android.gms.ads.APPLICATION_ID");
-    } catch (Exception e) {}
+    } catch (Exception ignored) {}
 
     if (adMobIdentifier == null) {
       promise.reject("Initialization error:", "You have to define com.google.android.gms.ads.APPLICATION_ID");
       return;
     }
+    RequestConfiguration.Builder rc = MobileAds.getRequestConfiguration().toBuilder();
 
+    rc = rc.setMaxAdContentRating(maxAdContentRating);
+    rc = rc.setTagForChildDirectedTreatment(tagForChildDirectedTreatment);
+    rc = rc.setTagForUnderAgeOfConsent(tagForUnderAgeOfConsent);
+
+    MobileAds.setRequestConfiguration(rc.build());
     MobileAds.initialize(activity, initializationStatus -> promise.resolve(true));
   }
 

@@ -5,6 +5,7 @@ import {
   createInterstitialAd,
   showInterstitialAd,
   showRewardAd,
+  TagForUnderAgeOfConsent,
   TestIds,
   useInitialize,
 } from '@imcsorin/rn-admob';
@@ -12,7 +13,10 @@ import {
 export default function App() {
   const [consent, setConsent] = React.useState(false);
   const [msg, setMsg] = React.useState('');
-  const isAdMobInitialized = useInitialize(!consent);
+  const isAdMobInitialized = useInitialize({
+    skip: !consent,
+    tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.true,
+  });
 
   const giveConsent = () => setConsent(true);
 
