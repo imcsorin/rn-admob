@@ -5,7 +5,11 @@ AdMob integration for RN
 ## Installation
 
 ```sh
-yarn add rn-admob
+yarn add @imcsorin/rn-admob
+```
+
+```js
+import {useInitialize} from '@imcsorin/rn-admob'
 ```
 
 ## Usage
