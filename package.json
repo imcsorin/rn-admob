@@ -2,6 +2,7 @@
   "name": "@imcsorin/rn-admob",
   "version": "0.1.0",
   "description": "test",
+  "private": false,
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
