@@ -1,3 +1,4 @@
+import React from 'react';
 import { NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
@@ -17,6 +18,41 @@ const RnAdmob = NativeModules.RnAdmob
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return RnAdmob.multiply(a, b);
-}
+const useInitialize = (): boolean => {
+  const [isInitialized, setIsInitialized] = React.useState(false);
+
+  React.useEffect(() => {
+    RnAdmob.initialize(setIsInitialized);
+  }, [setIsInitialized]);
+
+  return isInitialized;
+};
+
+const showInterstitialAd = async () => await RnAdmob.showInterstitialAd();
+const createInterstitialAd = async (unitId: string): Promise<void> =>
+  await RnAdmob.createInterstitialAd(unitId);
+const showRewardAd = async (
+  unitId: string
+): Promise<{ type: string; amount: number }> =>
+  await RnAdmob.showRewardAd(unitId);
+const setTestDeviceIds = async () => RnAdmob.setTestDeviceIds;
+
+const TestIds: { interstitial: string; reward: string } = Platform.select({
+  ios: {
+    interstitial: 'ca-app-pub-3940256099942544/4411468910',
+    reward: 'ca-app-pub-3940256099942544/1712485313',
+  },
+  android: {
+    interstitial: 'ca-app-pub-3940256099942544/1033173712',
+    reward: 'ca-app-pub-3940256099942544/5224354917',
+  },
+}) as any;
+
+export {
+  useInitialize,
+  showInterstitialAd,
+  createInterstitialAd,
+  showRewardAd,
+  TestIds,
+  setTestDeviceIds,
+};

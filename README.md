@@ -1,21 +1,26 @@
 # rn-admob
 
-AdMob integration
+AdMob integration for RN
 
 ## Installation
 
 ```sh
-npm install rn-admob
+yarn add rn-admob
 ```
 
 ## Usage
 
-```js
-import { multiply } from 'rn-admob';
+Don't forget to add the following code in AndroidManifest.xml:
 
-// ...
-
-const result = await multiply(3, 7);
+```xml
+<manifest>
+    <application>
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+    </application>
+</manifest>
 ```
 
 ## Contributing
@@ -25,7 +30,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
