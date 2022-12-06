@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "rn-admob": ["./src/index"]
+      "@imcsorin/rn-admob": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

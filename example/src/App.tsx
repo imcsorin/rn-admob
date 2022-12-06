@@ -7,10 +7,10 @@ import {
   showRewardAd,
   TestIds,
   useInitialize,
-} from 'rn-admob';
+} from '@imcsorin/rn-admob';
 
 export default function App() {
-  const [err, setErr] = React.useState('');
+  const [msg, setMsg] = React.useState('');
   const isAdMobInitialized = useInitialize();
 
   const onInterstitialAdPress = async () => {
@@ -18,15 +18,16 @@ export default function App() {
       await createInterstitialAd(TestIds.interstitial);
       await showInterstitialAd();
     } catch (e) {
-      setErr(`${e}`);
+      setMsg(`Interstitial -> ${e}`);
     }
   };
 
   const onRewardAdPress = async () => {
     try {
-      await showRewardAd(TestIds.reward);
+      const resp = await showRewardAd(TestIds.reward);
+      setMsg(JSON.stringify(resp));
     } catch (e) {
-      setErr(`${e}`);
+      setMsg(`Reward -> ${e}`);
     }
   };
 
@@ -39,7 +40,7 @@ export default function App() {
       <TouchableOpacity onPress={onRewardAdPress} style={styles.element}>
         <Text>Try reward ad</Text>
       </TouchableOpacity>
-      <Text>{err}</Text>
+      <Text>{msg}</Text>
     </View>
   );
 }

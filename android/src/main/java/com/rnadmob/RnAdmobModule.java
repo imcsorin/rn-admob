@@ -62,22 +62,27 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void initialize(Callback clb) throws Exception {
+  public void initialize(final Promise promise) {
     Context context = getReactApplicationContext();
     Activity activity = getCurrentActivity();
     if (activity == null || context == null) {
-      clb.invoke(false);
+      promise.reject("Initialization error:", "unable to get current activity");
       return;
     };
 
-    ApplicationInfo ai;
-    ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-    Object adMobIdentifier = (Object) ai.metaData.get("com.google.android.gms.ads.APPLICATION_ID");
+    Object adMobIdentifier = null;
+    try {
+      ApplicationInfo ai;
+      ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+      adMobIdentifier = (Object) ai.metaData.get("com.google.android.gms.ads.APPLICATION_ID");
+    } catch (Exception e) {}
+
     if (adMobIdentifier == null) {
-      throw new Exception("You forgot to define com.google.android.gms.ads.APPLICATION_ID");
+      promise.reject("Initialization error:", "You have to define com.google.android.gms.ads.APPLICATION_ID");
+      return;
     }
 
-    MobileAds.initialize(activity, initializationStatus -> clb.invoke(true));
+    MobileAds.initialize(activity, initializationStatus -> promise.resolve(true));
     RequestConfiguration configuration =
             new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
     MobileAds.setRequestConfiguration(configuration);

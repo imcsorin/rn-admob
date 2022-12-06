@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
-  `The package 'rn-admob' doesn't seem to be linked. Make sure: \n\n` +
+  `The package '@imcsorin/rn-admob' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
@@ -21,9 +21,18 @@ const RnAdmob = NativeModules.RnAdmob
 const useInitialize = (): boolean => {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
+  const f = async () => {
+    try {
+      const resp = await RnAdmob.initialize();
+      setIsInitialized(resp);
+    } catch {
+      setIsInitialized(false);
+    }
+  };
+
   React.useEffect(() => {
-    RnAdmob.initialize(setIsInitialized);
-  }, [setIsInitialized]);
+    f();
+  }, []);
 
   return isInitialized;
 };
