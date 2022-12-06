@@ -36,11 +36,6 @@
     "bootstrap": "yarn example && yarn install && yarn example pods",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
   },
-  "keywords": [
-    "react-native",
-    "ios",
-    "android"
-  ],
   "repository": "https://github.com/imcsorin/rn-admob",
   "author": "Sorin C. <work@csorin.com> (https://github.com/imcsorin)",
   "license": "MIT",
