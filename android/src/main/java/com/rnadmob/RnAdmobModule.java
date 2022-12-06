@@ -37,7 +37,6 @@ import java.util.Objects;
 @ReactModule(name = RnAdmobModule.NAME)
 public class RnAdmobModule extends ReactContextBaseJavaModule {
   public static final String NAME = "RnAdmob";
-  private List<String> testDeviceIds = new ArrayList<>();
   private InterstitialAd requestedInterstitialAd = null;
 
   public RnAdmobModule(ReactApplicationContext reactContext) {
@@ -48,17 +47,6 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
   @NonNull
   public String getName() {
     return NAME;
-  }
-
-  @ReactMethod
-  public void setTestDeviceIds(ReadableArray options, final Promise promise) {
-    List<String> deviceIds = new ArrayList<String>(options.size());
-    for (Object object : options.toArrayList()) {
-      deviceIds.add(object != null ? object.toString() : null);
-    }
-
-    testDeviceIds = deviceIds;
-    promise.resolve(new Object());
   }
 
   @ReactMethod
@@ -83,9 +71,6 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
     }
 
     MobileAds.initialize(activity, initializationStatus -> promise.resolve(true));
-    RequestConfiguration configuration =
-            new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-    MobileAds.setRequestConfiguration(configuration);
   }
 
   @ReactMethod

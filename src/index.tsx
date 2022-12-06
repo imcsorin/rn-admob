@@ -18,7 +18,7 @@ const RnAdmob = NativeModules.RnAdmob
       }
     );
 
-const useInitialize = (): boolean => {
+const useInitialize = (skip?: boolean): boolean => {
   const [isInitialized, setIsInitialized] = React.useState(false);
 
   const f = async () => {
@@ -31,8 +31,8 @@ const useInitialize = (): boolean => {
   };
 
   React.useEffect(() => {
-    f();
-  }, []);
+    !skip && f();
+  }, [skip]);
 
   return isInitialized;
 };
@@ -44,7 +44,6 @@ const showRewardAd = async (
   unitId: string
 ): Promise<{ type: string; amount: number }> =>
   await RnAdmob.showRewardAd(unitId);
-const setTestDeviceIds = async () => RnAdmob.setTestDeviceIds;
 
 const TestIds: { interstitial: string; reward: string } = Platform.select({
   ios: {
@@ -63,5 +62,4 @@ export {
   createInterstitialAd,
   showRewardAd,
   TestIds,
-  setTestDeviceIds,
 };

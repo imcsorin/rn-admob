@@ -10,8 +10,11 @@ import {
 } from '@imcsorin/rn-admob';
 
 export default function App() {
+  const [consent, setConsent] = React.useState(false);
   const [msg, setMsg] = React.useState('');
-  const isAdMobInitialized = useInitialize();
+  const isAdMobInitialized = useInitialize(!consent);
+
+  const giveConsent = () => setConsent(true);
 
   const onInterstitialAdPress = async () => {
     try {
@@ -33,6 +36,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={giveConsent} style={styles.element}>
+        <Text>Give consent</Text>
+      </TouchableOpacity>
       <Text>Result: {isAdMobInitialized ? 'YES' : 'NO'}</Text>
       <TouchableOpacity onPress={onInterstitialAdPress} style={styles.element}>
         <Text>Try interstitial ad</Text>
