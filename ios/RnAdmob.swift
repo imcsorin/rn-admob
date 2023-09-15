@@ -3,6 +3,7 @@ import GoogleMobileAds
 @objc(RnAdmob)
 class RnAdmob: NSObject {
   private var requestedInterstitialAd: GADInterstitialAd?
+  private var requestedRewardAd: GADRewardedAd?
 
   @objc public func initialize(
     _ maxAdContentRating: GADMaxAdContentRating,
@@ -62,29 +63,46 @@ class RnAdmob: NSObject {
     )
   }
 
-  @objc public func showRewardAd(
+  @objc public func createRewardAd(
     _ unitId: String,
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
-    let rootViewController = UIApplication.shared.delegate?.window??.rootViewController
     let request = GADRequest()
     GADRewardedAd.load(
       withAdUnitID: unitId,
       request: request,
-      completionHandler: { ad, error in
+      completionHandler: { [self] ad, error in
         if let error = error {
           reject("Reward ad error:", error.localizedDescription, error)
           return
         }
-        ad?.present(
-          fromRootViewController: rootViewController!,
-          userDidEarnRewardHandler: {
-
-            resolve(["type": ad?.adReward.type ?? "", "amount": ad?.adReward.amount ?? 0])
-          })
+        requestedRewardAd = ad
+        resolve(true)
       }
     )
+  }
 
+  @objc public func showRewardAd(
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+
+    let rootViewController = UIApplication.shared.delegate?.window??.rootViewController
+    DispatchQueue.main.async { [self, rootViewController] in
+      if requestedInterstitialAd != nil {
+        requestedRewardAd!.present(
+          fromRootViewController: rootViewController!,
+          userDidEarnRewardHandler: {
+            resolve([
+              "type": requestedRewardAd?.adReward.type ?? "",
+              "amount": requestedRewardAd?.adReward.amount ?? 0,
+            ])
+          })
+
+      } else {
+        reject("Interstitial ad error:", "not loaded", Error.self as? Error)
+      }
+    }
   }
 }

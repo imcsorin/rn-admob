@@ -38,6 +38,7 @@ import java.util.Objects;
 public class RnAdmobModule extends ReactContextBaseJavaModule {
   public static final String NAME = "RnAdmob";
   private InterstitialAd requestedInterstitialAd = null;
+  private RewardedAd requestedRewardAd = null;
 
   public RnAdmobModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -124,7 +125,7 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void showRewardAd(String unitId, final Promise promise) {
+  public void createRewardAd(String unitId, final Promise promise) {
     Activity activity = getCurrentActivity();
     if (activity == null) {
       promise.reject("Reward ad error:", "unable to get current activity");
@@ -139,21 +140,36 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
           @Override
           public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
             super.onAdFailedToLoad(loadAdError);
+            promise.reject("Reward ad error:", loadAdError.getMessage());
           }
 
           @Override
-          public void onAdLoaded(@NonNull RewardedAd interstitialAd) {
-            super.onAdLoaded(interstitialAd);
-            interstitialAd.show(activity, rewardItem -> {
-              WritableMap m = new WritableNativeMap();
-              m.putString("type", rewardItem.getType());
-              m.putInt("amount", rewardItem.getAmount());
-              promise.resolve(m);
-            });
+          public void onAdLoaded(@NonNull RewardedAd rewardAd) {
+            super.onAdLoaded(rewardAd);
+            requestedRewardAd = rewardAd;
+            promise.resolve(true);
           }
         });
 
       }
+    });
+  }
+
+  @ReactMethod
+  public void showRewardAd(final Promise promise) {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      promise.reject("Reward ad error:", "unable to get current activity");
+      return;
+    };
+
+    UiThreadUtil.runOnUiThread(() -> {
+      requestedRewardAd.show(activity, rewardItem -> {
+        WritableMap m = new WritableNativeMap();
+        m.putString("type", rewardItem.getType());
+        m.putInt("amount", rewardItem.getAmount());
+        promise.resolve(m);
+      });
     });
   }
 }

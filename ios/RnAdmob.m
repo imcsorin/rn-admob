@@ -14,12 +14,16 @@ RCT_EXTERN_METHOD(createInterstitialAd
                   : (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
+RCT_EXTERN_METHOD(createRewardAd
+                  : (NSString *) unitId
+                  : (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+
 RCT_EXTERN_METHOD(showInterstitialAd
                   : (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 
 RCT_EXTERN_METHOD(showRewardAd
-                  : (NSString *) unitId
                   : (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 

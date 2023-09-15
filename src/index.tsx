@@ -76,12 +76,12 @@ const useInitialize = ({
 };
 
 const showInterstitialAd = async () => await RnAdmob.showInterstitialAd();
-const createInterstitialAd = async (unitId: string): Promise<void> =>
+const createInterstitialAd = async (unitId: string): Promise<boolean> =>
   await RnAdmob.createInterstitialAd(unitId);
-const showRewardAd = async (
-  unitId: string
-): Promise<{ type: string; amount: number }> =>
-  await RnAdmob.showRewardAd(unitId);
+const showRewardAd = async (): Promise<{ type: string; amount: number }> =>
+  await RnAdmob.showRewardAd();
+const createRewardAd = async (unitId: string): Promise<boolean> =>
+  await RnAdmob.createRewardAd(unitId);
 
 const TestIds: { interstitial: string; reward: string } = Platform.select({
   ios: {
@@ -99,5 +99,6 @@ export {
   showInterstitialAd,
   createInterstitialAd,
   showRewardAd,
+  createRewardAd,
   TestIds,
 };

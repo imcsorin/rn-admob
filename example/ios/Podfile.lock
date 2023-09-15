@@ -415,7 +415,7 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - rn-admob (0.2.1):
+  - rn-admob (0.4.0):
     - Google-Mobile-Ads-SDK
     - React-Core
   - SocketRocket (0.6.0)
@@ -634,11 +634,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  rn-admob: b95289fb995a21ab2b326f5d70f8485cf87ea6fc
+  rn-admob: dc139fc7a464df2f0dca9671ea18f309d2e743ec
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: a8a3760f72a66cba7c28175129b4bb2f28044741
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1
