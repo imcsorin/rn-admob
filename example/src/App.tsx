@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import {
   createInterstitialAd,
   showInterstitialAd,
+  createRewardAd,
   showRewardAd,
   TagForUnderAgeOfConsent,
   TestIds,
@@ -22,8 +23,16 @@ export default function App() {
 
   const onInterstitialAdPress = async () => {
     try {
-      await createInterstitialAd(TestIds.interstitial);
       await showInterstitialAd();
+    } catch (e) {
+      setMsg(`Interstitial -> ${e}`);
+    }
+  };
+
+  const onLoadInterstitialAdPress = async () => {
+    try {
+      await createInterstitialAd(TestIds.interstitial);
+      setMsg(`Loaded interstitial ad`);
     } catch (e) {
       setMsg(`Interstitial -> ${e}`);
     }
@@ -31,10 +40,19 @@ export default function App() {
 
   const onRewardAdPress = async () => {
     try {
-      const resp = await showRewardAd(TestIds.reward);
+      const resp = await showRewardAd();
       setMsg(JSON.stringify(resp));
     } catch (e) {
       setMsg(`Reward -> ${e}`);
+    }
+  };
+
+  const onLoadRewardAdPress = async () => {
+    try {
+      await createRewardAd(TestIds.interstitial);
+      setMsg(`Loaded reward ad`);
+    } catch (e) {
+      setMsg(`Interstitial -> ${e}`);
     }
   };
 
@@ -47,8 +65,17 @@ export default function App() {
       <TouchableOpacity onPress={onInterstitialAdPress} style={styles.element}>
         <Text>Try interstitial ad</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={onLoadInterstitialAdPress}
+        style={styles.element}
+      >
+        <Text>Load interstitial ad</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={onRewardAdPress} style={styles.element}>
         <Text>Try reward ad</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onLoadRewardAdPress} style={styles.element}>
+        <Text>Load reward ad</Text>
       </TouchableOpacity>
       <Text>{msg}</Text>
     </View>

@@ -38,6 +38,7 @@ class RnAdmob: NSObject {
       if requestedInterstitialAd != nil {
         requestedInterstitialAd!.present(fromRootViewController: rootViewController!)
         resolve(true)
+        requestedInterstitialAd = nil
       } else {
         reject("Interstitial ad error:", "not loaded", Error.self as? Error)
       }
@@ -90,7 +91,7 @@ class RnAdmob: NSObject {
 
     let rootViewController = UIApplication.shared.delegate?.window??.rootViewController
     DispatchQueue.main.async { [self, rootViewController] in
-      if requestedInterstitialAd != nil {
+      if requestedRewardAd != nil {
         requestedRewardAd!.present(
           fromRootViewController: rootViewController!,
           userDidEarnRewardHandler: {
@@ -98,6 +99,7 @@ class RnAdmob: NSObject {
               "type": requestedRewardAd?.adReward.type ?? "",
               "amount": requestedRewardAd?.adReward.amount ?? 0,
             ])
+            requestedRewardAd = nil
           })
 
       } else {

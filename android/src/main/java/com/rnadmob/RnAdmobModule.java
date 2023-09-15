@@ -88,9 +88,15 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
       return;
     };
 
+    if (requestedInterstitialAd == null) {
+      promise.reject("Interstitial ad error:", "not loaded");
+      return;
+    }
+
     UiThreadUtil.runOnUiThread(() -> {
       requestedInterstitialAd.show(activity);
       promise.resolve(true);
+      requestedInterstitialAd = null;
     });
   }
 
@@ -163,6 +169,11 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
       return;
     };
 
+    if (requestedRewardAd == null) {
+      promise.reject("Reward ad error:", "not loaded");
+      return;
+    }
+
     UiThreadUtil.runOnUiThread(() -> {
       requestedRewardAd.show(activity, rewardItem -> {
         WritableMap m = new WritableNativeMap();
@@ -170,6 +181,8 @@ public class RnAdmobModule extends ReactContextBaseJavaModule {
         m.putInt("amount", rewardItem.getAmount());
         promise.resolve(m);
       });
+
+      requestedRewardAd = null;
     });
   }
 }
