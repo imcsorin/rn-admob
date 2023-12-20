@@ -77,9 +77,9 @@
     "react-native": "*"
   },
   "engines": {
-    "node": ">= 16.0.0"
+    "node": ">= 16.9"
   },
-  "packageManager": "^yarn@1.22.21",
+  "packageManager": "yarn@1.22.21",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
